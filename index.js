@@ -23,7 +23,7 @@ mongoose
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:5173", // Change to your frontend URL
+    origin: "https://travel-story-frontend-twi3.onrender.com", // Change to your frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

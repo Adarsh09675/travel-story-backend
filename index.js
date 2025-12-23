@@ -21,7 +21,7 @@ mongoose
 // 🌐 Middleware
 app.use(
   cors({
-    origin: "https://travel-story-frontend-rust.netlify.app",
+    origin: "https://travel-story-frontend.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

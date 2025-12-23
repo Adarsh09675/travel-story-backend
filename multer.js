@@ -1,27 +1,21 @@
 import multer from "multer"
-import path from "path"
+import { CloudinaryStorage } from "multer-storage-cloudinary"
+import cloudinary from "./utils/cloudinary.js"
 
-// storage configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads/")
-  },
-
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)) //unique file name
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "travel-stories",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    transformation: [{ quality: "auto" }],
   },
 })
 
-// file filter to accept only images
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image/")) {
-    cb(null, true)
-  } else {
-    cb(new Error("Only images are allowed"), false)
-  }
-}
-
-// Initialize multer instance
-const upload = multer({ storage, fileFilter })
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB
+  },
+})
 
 export default upload

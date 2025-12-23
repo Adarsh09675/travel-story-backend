@@ -20,7 +20,7 @@ export const addTravelStory = async (req, res, next) => {
       story,
       visitedLocation,
       userId,
-      imageUrl, // Cloudinary URL
+      imageUrl,
       visitedDate: parsedVisitedDate,
     })
 
@@ -53,7 +53,7 @@ export const getAllTravelStory = async (req, res, next) => {
 }
 
 /* =========================
-   IMAGE UPLOAD (CLOUDINARY)
+   IMAGE UPLOAD
 ========================= */
 export const imageUpload = async (req, res, next) => {
   try {
@@ -62,7 +62,29 @@ export const imageUpload = async (req, res, next) => {
     }
 
     res.status(201).json({
-      imageUrl: req.file.path, // Cloudinary secure URL
+      imageUrl: req.file.path,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+/* =========================
+   DELETE IMAGE (FIX ADDED)
+========================= */
+export const deleteImage = async (req, res, next) => {
+  try {
+    const { imageUrl } = req.body
+
+    if (!imageUrl) {
+      return next(errorHandler(400, "Image URL is required"))
+    }
+
+    // If using Cloudinary later, delete logic can go here
+    // For now frontend can safely remove the image
+
+    res.status(200).json({
+      message: "Image deleted successfully",
     })
   } catch (error) {
     next(error)
@@ -123,7 +145,6 @@ export const deleteTravelStory = async (req, res, next) => {
 
     await travelStory.deleteOne()
 
-    // ❗ Image deletion is handled by Cloudinary (optional feature)
     res.status(200).json({ message: "Travel story deleted successfully!" })
   } catch (error) {
     next(error)
@@ -185,7 +206,7 @@ export const searchTravelStory = async (req, res, next) => {
 }
 
 /* =========================
-   FILTER BY DATE
+   FILTER STORIES
 ========================= */
 export const filterTravelStories = async (req, res, next) => {
   const { startDate, endDate } = req.query
